@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌍 תיקון ארבעת היסודות</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Heebo', sans-serif;
+        }
+        
+        body {
+            background: #FFF5F7;
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+            padding-bottom: 200px;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2em;
+            color: #D4A574;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #888;
+            font-size: 1.1em;
+        }
+        
+        .icon-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .main-icon {
+            font-size: 50px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .buttons-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+        
+        .power-button {
+            background: #fff;
+            border: 2px solid #FFB6C1;
+            border-radius: 20px;
+            padding: 20px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .power-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(212, 165, 116, 0.2);
+        }
+        
+        .power-button.fire { border-color: #FFB6C1; }
+        .power-button.fire:hover { background: #FFF0F3; }
+        
+        .power-button.wind { border-color: #B8E6D4; }
+        .power-button.wind:hover { background: #F0FFF8; }
+        
+        .power-button.water { border-color: #B8E6D4; }
+        .power-button.water:hover { background: #F0FFF8; }
+        
+        .power-button.earth { border-color: #D4A574; }
+        .power-button.earth:hover { background: #FFFAF5; }
+        
+        .button-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .button-title {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .button-desc {
+            font-size: 0.8em;
+            color: #888;
+        }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #FFF5F7;
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+        
+        .overlay.active {
+            display: flex;
+        }
+        
+        .overlay-content {
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .close-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #FFB6C1;
+            border: none;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .animation-icon {
+            font-size: 80px;
+            margin-bottom: 30px;
+        }
+        
+        .animation-text {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            min-height: 60px;
+            color: #333;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #FFE4EC;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 6px;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-fill.fire { background: #FFB6C1; }
+        .progress-fill.wind { background: #B8E6D4; }
+        .progress-fill.water { background: #87CEEB; }
+        .progress-fill.earth { background: #D4A574; }
+        
+        .completion-message {
+            display: none;
+            padding: 20px;
+            background: #fff;
+            border: 2px solid #B8E6D4;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        
+        .completion-message.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .install-btn {
+            background: #B8E6D4;
+            border: none;
+            color: #333;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .install-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(184, 230, 212, 0.5);
+        }
+        
+        .install-btn:disabled {
+            background: #ddd;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .reset-btn {
+            background: #FFE4EC;
+            border: 2px solid #FFB6C1;
+            color: #666;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🌍 תיקון ארבעת היסודות</h1>
+        <p>איזון והרמוניה בין יסודות הנפש</p>
+    </div>
+    
+    <div class="icon-container">
+        <span class="main-icon">🔥</span>
+        <span class="main-icon">💨</span>
+        <span class="main-icon">💧</span>
+        <span class="main-icon">🌍</span>
+    </div>
+    
+    <div class="buttons-container">
+        <div class="power-button fire" onclick="startProcess('fire')">
+            <span class="button-icon">🔥</span>
+            <div class="button-title">תיקון יסוד האש</div>
+            <div class="button-desc">כעס, תשוקה, מרץ</div>
+        </div>
+        
+        <div class="power-button wind" onclick="startProcess('wind')">
+            <span class="button-icon">💨</span>
+            <div class="button-title">תיקון יסוד הרוח</div>
+            <div class="button-desc">מחשבות, תקשורת, שינוי</div>
+        </div>
+        
+        <div class="power-button water" onclick="startProcess('water')">
+            <span class="button-icon">💧</span>
+            <div class="button-title">תיקון יסוד המים</div>
+            <div class="button-desc">רגשות, אינטואיציה, זרימה</div>
+        </div>
+        
+        <div class="power-button earth" onclick="startProcess('earth')">
+            <span class="button-icon">🌍</span>
+            <div class="button-title">תיקון יסוד העפר</div>
+            <div class="button-desc">יציבות, גוף, פרנסה</div>
+        </div>
+    </div>
+    
+    <!-- Fire Overlay -->
+    <div class="overlay" id="fireOverlay">
+        <button class="close-overlay" onclick="closeOverlay('fire')">✕</button>
+        <div class="overlay-content">
+            <div class="animation-icon" id="fireIcon">🔥</div>
+            <div class="animation-text" id="fireText">מתחילה תיקון יסוד האש...</div>
+            <div class="progress-bar">
+                <div class="progress-fill fire" id="fireProgress"></div>
+            </div>
+            <button class="install-btn" id="fireBtn" onclick="runFireProcess()">🔥 התחל תיקון</button>
+            <div class="completion-message" id="fireComplete">
+                <p style="font-size: 1.3em; margin-bottom: 10px; color: #D4A574;">✅ כל הכבוד!</p>
+                <p style="color: #666;">יסוד האש תוקן בהצלחה!</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Wind Overlay -->
+    <div class="overlay" id="windOverlay">
+        <button class="close-overlay" onclick="closeOverlay('wind')">✕</button>
+        <div class="overlay-content">
+            <div class="animation-icon" id="windIcon">💨</div>
+            <div class="animation-text" id="windText">מתחילה תיקון יסוד הרוח...</div>
+            <div class="progress-bar">
+                <div class="progress-fill wind" id="windProgress"></div>
+            </div>
+            <button class="install-btn" id="windBtn" onclick="runWindProcess()">💨 התחל תיקון</button>
+            <div class="completion-message" id="windComplete">
+                <p style="font-size: 1.3em; margin-bottom: 10px; color: #D4A574;">✅ כל הכבוד!</p>
+                <p style="color: #666;">יסוד הרוח תוקן בהצלחה!</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Water Overlay -->
+    <div class="overlay" id="waterOverlay">
+        <button class="close-overlay" onclick="closeOverlay('water')">✕</button>
+        <div class="overlay-content">
+            <div class="animation-icon" id="waterIcon">💧</div>
+            <div class="animation-text" id="waterText">מתחילה תיקון יסוד המים...</div>
+            <div class="progress-bar">
+                <div class="progress-fill water" id="waterProgress"></div>
+            </div>
+            <button class="install-btn" id="waterBtn" onclick="runWaterProcess()">💧 התחל תיקון</button>
+            <div class="completion-message" id="waterComplete">
+                <p style="font-size: 1.3em; margin-bottom: 10px; color: #D4A574;">✅ כל הכבוד!</p>
+                <p style="color: #666;">יסוד המים תוקן בהצלחה!</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Earth Overlay -->
+    <div class="overlay" id="earthOverlay">
+        <button class="close-overlay" onclick="closeOverlay('earth')">✕</button>
+        <div class="overlay-content">
+            <div class="animation-icon" id="earthIcon">🌍</div>
+            <div class="animation-text" id="earthText">מתחילה תיקון יסוד העפר...</div>
+            <div class="progress-bar">
+                <div class="progress-fill earth" id="earthProgress"></div>
+            </div>
+            <button class="install-btn" id="earthBtn" onclick="runEarthProcess()">🌍 התחל תיקון</button>
+            <div class="completion-message" id="earthComplete">
+                <p style="font-size: 1.3em; margin-bottom: 10px; color: #D4A574;">✅ כל הכבוד!</p>
+                <p style="color: #666;">יסוד העפר תוקן בהצלחה!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function startProcess(type) {
+            document.getElementById(type + 'Overlay').classList.add('active');
+            document.getElementById(type + 'Progress').style.width = '0%';
+            document.getElementById(type + 'Complete').classList.remove('show');
+            document.getElementById(type + 'Btn').disabled = false;
+        }
+        
+        function closeOverlay(type) {
+            document.getElementById(type + 'Overlay').classList.remove('active');
+        }
+        
+        function runFireProcess() {
+            const btn = document.getElementById('fireBtn');
+            const progress = document.getElementById('fireProgress');
+            const text = document.getElementById('fireText');
+            const icon = document.getElementById('fireIcon');
+            btn.disabled = true;
+            btn.textContent = '⏳ בתהליך...';
+            
+            const stages = [
+                { percent: 10, text: '🔍 סורקת את יסוד האש בנפש...', icon: '🔍' },
+                { percent: 20, text: '🔥 מזהה עודף כעס...', icon: '🔥' },
+                { percent: 30, text: '🗑️ מוחקת כעסים ישנים...', icon: '🗑️' },
+                { percent: 40, text: '✨ מנקה תסכולים...', icon: '✨' },
+                { percent: 50, text: '⚖️ מאזנת את התשוקה...', icon: '⚖️' },
+                { percent: 60, text: '🌟 מכוונת את המרץ לחיוב...', icon: '🌟' },
+                { percent: 70, text: '💪 מחזקת את הרצון...', icon: '💪' },
+                { percent: 80, text: '🌸 מטמיעה סבלנות...', icon: '🌸' },
+                { percent: 90, text: '💜 יוצרת איזון פנימי...', icon: '💜' },
+                { percent: 100, text: '✅ יסוד האש תוקן!', icon: '🔥' }
+            ];
+            
+            let stage = 0;
+            const interval = setInterval(() => {
+                if (stage < stages.length) {
+                    progress.style.width = stages[stage].percent + '%';
+                    text.textContent = stages[stage].text;
+                    icon.textContent = stages[stage].icon;
+                    stage++;
+                } else {
+                    clearInterval(interval);
+                    document.getElementById('fireComplete').classList.add('show');
+                    btn.disabled = false;
+                    btn.textContent = '🔥 התחל תיקון';
+                }
+            }, 4000);
+        }
+        
+        function runWindProcess() {
+            const btn = document.getElementById('windBtn');
+            const progress = document.getElementById('windProgress');
+            const text = document.getElementById('windText');
+            const icon = document.getElementById('windIcon');
+            btn.disabled = true;
+            btn.textContent = '⏳ בתהליך...';
+            
+            const stages = [
+                { percent: 10, text: '🔍 סורקת את יסוד הרוח בנפש...', icon: '🔍' },
+                { percent: 20, text: '💨 מזהה מחשבות שליליות...', icon: '💨' },
+                { percent: 30, text: '🗑️ מוחקת מחשבות טורדניות...', icon: '🗑️' },
+                { percent: 40, text: '✨ מנקה חרדות...', icon: '✨' },
+                { percent: 50, text: '⚖️ מאזנת את המחשבה...', icon: '⚖️' },
+                { percent: 60, text: '🌟 מכוונת לחשיבה חיובית...', icon: '🌟' },
+                { percent: 70, text: '🗣️ משפרת תקשורת...', icon: '🗣️' },
+                { percent: 80, text: '🌸 מטמיעה בהירות מחשבתית...', icon: '🌸' },
+                { percent: 90, text: '💜 יוצרת שקט מנטלי...', icon: '💜' },
+                { percent: 100, text: '✅ יסוד הרוח תוקן!', icon: '💨' }
+            ];
+            
+            let stage = 0;
+            const interval = setInterval(() => {
+                if (stage < stages.length) {
+                    progress.style.width = stages[stage].percent + '%';
+                    text.textContent = stages[stage].text;
+                    icon.textContent = stages[stage].icon;
+                    stage++;
+                } else {
+                    clearInterval(interval);
+                    document.getElementById('windComplete').classList.add('show');
+                    btn.disabled = false;
+                    btn.textContent = '💨 התחל תיקון';
+                }
+            }, 4000);
+        }
+        
+        function runWaterProcess() {
+            const btn = document.getElementById('waterBtn');
+            const progress = document.getElementById('waterProgress');
+            const text = document.getElementById('waterText');
+            const icon = document.getElementById('waterIcon');
+            btn.disabled = true;
+            btn.textContent = '⏳ בתהליך...';
+            
+            const stages = [
+                { percent: 10, text: '🔍 סורקת את יסוד המים בנפש...', icon: '🔍' },
+                { percent: 20, text: '💧 מזהה רגשות כבושים...', icon: '💧' },
+                { percent: 30, text: '🗑️ משחררת עצבות ישנה...', icon: '🗑️' },
+                { percent: 40, text: '✨ מנקה פחדים עמוקים...', icon: '✨' },
+                { percent: 50, text: '⚖️ מאזנת את הרגש...', icon: '⚖️' },
+                { percent: 60, text: '🌊 יוצרת זרימה רגשית בריאה...', icon: '🌊' },
+                { percent: 70, text: '💜 מחזקת אינטואיציה...', icon: '💜' },
+                { percent: 80, text: '🌸 מטמיעה רוגע עמוק...', icon: '🌸' },
+                { percent: 90, text: '✨ יוצרת גמישות רגשית...', icon: '✨' },
+                { percent: 100, text: '✅ יסוד המים תוקן!', icon: '💧' }
+            ];
+            
+            let stage = 0;
+            const interval = setInterval(() => {
+                if (stage < stages.length) {
+                    progress.style.width = stages[stage].percent + '%';
+                    text.textContent = stages[stage].text;
+                    icon.textContent = stages[stage].icon;
+                    stage++;
+                } else {
+                    clearInterval(interval);
+                    document.getElementById('waterComplete').classList.add('show');
+                    btn.disabled = false;
+                    btn.textContent = '💧 התחל תיקון';
+                }
+            }, 4000);
+        }
+        
+        function runEarthProcess() {
+            const btn = document.getElementById('earthBtn');
+            const progress = document.getElementById('earthProgress');
+            const text = document.getElementById('earthText');
+            const icon = document.getElementById('earthIcon');
+            btn.disabled = true;
+            btn.textContent = '⏳ בתהליך...';
+            
+            const stages = [
+                { percent: 10, text: '🔍 סורקת את יסוד העפר בנפש...', icon: '🔍' },
+                { percent: 20, text: '🌍 מזהה חסמי יציבות...', icon: '🌍' },
+                { percent: 30, text: '🗑️ מוחקת חוסר ביטחון כלכלי...', icon: '🗑️' },
+                { percent: 40, text: '✨ מנקה פחדים מהגוף...', icon: '✨' },
+                { percent: 50, text: '⚖️ מאזנת את הקשר לחומר...', icon: '⚖️' },
+                { percent: 60, text: '🌱 יוצרת הארקה ויציבות...', icon: '🌱' },
+                { percent: 70, text: '💪 מחזקת תחושת ביטחון...', icon: '💪' },
+                { percent: 80, text: '🌸 מטמיעה שפע ופרנסה...', icon: '🌸' },
+                { percent: 90, text: '💜 יוצרת קשר בריא לגוף...', icon: '💜' },
+                { percent: 100, text: '✅ יסוד העפר תוקן!', icon: '🌍' }
+            ];
+            
+            let stage = 0;
+            const interval = setInterval(() => {
+                if (stage < stages.length) {
+                    progress.style.width = stages[stage].percent + '%';
+                    text.textContent = stages[stage].text;
+                    icon.textContent = stages[stage].icon;
+                    stage++;
+                } else {
+                    clearInterval(interval);
+                    document.getElementById('earthComplete').classList.add('show');
+                    btn.disabled = false;
+                    btn.textContent = '🌍 התחל תיקון';
+                }
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
